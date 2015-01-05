@@ -1,1 +1,7 @@
-Empresas como mueblerias y bancos tienen contratos y acuerdos designados con sus clientes. Este sistema se encarga de tomar toda esa información y generar lo que llamamos una "Gestion", la cual se distribuye a una cantidad especifica de representantes que tiene la empresa. Las gestiones se generan equitativamente a los representantes de la empresa para de esta manera poder llamar con hora y fecha previa al cliente para avisarle de su pago o deuda, o para de la misma manera llegar a un acuerdo o contrato de la cuota de pago.
+<h2><strong>System Information</strong></h2>
+
+Companies such as furniture stores and banks have designated contracts and agreements with its 
+customers. This system is responsible for taking all that information and distribute it evenly 
+so that employees can manage the information and give a better service to its customers. 
+This also helps the employee to contact hours earlier the customer to notify of his payment or debt. 
+Or in the same way to reach an agreement or contract with themselves.
