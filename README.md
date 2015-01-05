@@ -5,3 +5,7 @@ customers. This system is responsible for taking all that information and distri
 so that employees can manage the information and give a better service to its customers. 
 This also helps the employee to contact hours earlier the customer to notify of his payment or debt. 
 Or in the same way to reach an agreement or contract with themselves.
+
+Developed by: Jeremy Lopez
+
+
