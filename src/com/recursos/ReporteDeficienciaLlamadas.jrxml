@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteDeficienciaLlamadas" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9d12a5e2-d6fd-432d-8e8b-dc33ed59ddae">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conexion Base de Datos"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="Fecha Inicial" class="java.util.Date">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="Fecha Final" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[Select ID, Representante, Gestiones_Realizas, Gestiones_por_Semana, Gestiones_asignadas ,case when Gestiones_por_Semana_Realizada >= Gestiones_por_Semana then 'Cumplio' else  'No Cumplio' end Cumplimiento
+from (
+ Select *, Gestiones_Realizas /Cant_semana Gestiones_por_Semana_Realizada
+ From (
+  Select 
+   a.id_representante ID, 
+   a.nombre_representante + ' ' + a.apellido_representante representante,
+   Sum(Case When b.estado_gestion = 1 Then 1 else 0 End) Gestiones_Realizas,
+   Count(*) Gestiones_asignadas,
+   DATEDIFF(WEEK,   $P{Fecha Inicial}  ,  $P{Fecha Final}  ) Cant_semana
+  From REPRESENTANTE a
+  Join GESTION_LLAMADA b on a.id_representante = b.id_representante
+  Where b.fecha_gestion between  $P{Fecha Inicial}   and  $P{Fecha Final}  
+  Group by a.id_representante, a.nombre_representante, a.apellido_representante
+ ) a,
+ (select valor_parametro Gestiones_por_Semana from PARAMETRO where id_parametro = 3 ) b
+) a]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="Representante" class="java.lang.String"/>
+	<field name="Gestiones_Realizas" class="java.lang.Integer"/>
+	<field name="Gestiones_por_Semana" class="java.lang.Integer"/>
+	<field name="Gestiones_asignadas" class="java.lang.Integer"/>
+	<field name="Cumplimiento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-1" y="-2" width="814" height="66" backcolor="#0FDFF2" uuid="b181c1e4-91c8-4163-8122-1ebf3df52afa"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="730" height="66" uuid="1335201b-0325-465e-a6b1-34e719d6f35b"/>
+					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
+					<textElement verticalAlignment="Bottom">
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Reporte Deficiencia en Llamadas]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="-1" y="64" width="814" height="32" forecolor="#000000" backcolor="#24D4E0" uuid="1ee37185-135e-4f49-9b9f-f16bd83d9a8d"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="654" y="10" width="144" height="20" forecolor="#FFFFFF" uuid="67788224-82a3-4e33-8fae-23f75714ca6d"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="4" y="3" width="50" height="20" forecolor="#FFFFFF" uuid="3bef3590-2771-4456-8e9f-a8efc641e36d"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Desde:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyy">
+					<reportElement x="54" y="2" width="50" height="20" forecolor="#FFFFFF" uuid="08424d2c-bcb8-4c44-a17c-ee79d562ca15"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Fecha Inicial}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="104" y="2" width="50" height="20" forecolor="#FFFFFF" uuid="8c8a269c-2109-4271-bcde-aa05c3772b17"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Hasta:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="154" y="2" width="50" height="21" forecolor="#FFFFFF" uuid="0ba890be-9ff8-42c7-8cfe-87681b047bd9"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Fecha Final}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="40" height="18" forecolor="#000000" uuid="8f6191f9-6dc7-4ed5-bfbb-f8f69f2aaddf"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="40" y="0" width="200" height="18" forecolor="#000000" uuid="bf34134a-4d94-4074-b0ee-2f669a0a818c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre Representante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="240" y="0" width="156" height="18" forecolor="#000000" uuid="550579f2-6123-4196-b44d-51e0951f18e1"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gestiones Completadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="396" y="0" width="154" height="18" forecolor="#000000" uuid="259cce8a-b7dc-4ac2-a7c4-2b621c19a17b"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gestiones por Semana]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="550" y="0" width="141" height="18" forecolor="#000000" uuid="53f01bb9-bb2a-46c2-a0e4-52724f9622cf"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gestiones Asignadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="691" y="2" width="132" height="18" forecolor="#000000" uuid="1c167f92-1c95-41ef-b26f-bdf7831bd5e5"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cumplimiento]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="822" height="18" uuid="02e76b10-20b5-430b-b687-0039ba1af4be"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="40" height="18" uuid="b830260f-8cba-42fc-a712-7655791adf4c"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="40" y="0" width="200" height="18" uuid="aad5cbe9-8d15-451f-b8d1-e6554d53cce4"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Representante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="240" y="0" width="156" height="18" uuid="eefebf66-6116-4e27-9e66-166197564b9b"/>
+					<textElement textAlignment="Right">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Gestiones_Realizas}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="396" y="0" width="154" height="18" uuid="7925626b-d796-48d7-88cc-40d4c2ee119a"/>
+					<textElement textAlignment="Right">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Gestiones_por_Semana}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="550" y="0" width="141" height="18" uuid="97c6b9c1-4588-4882-940c-530799051bd7"/>
+					<textElement textAlignment="Right">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Gestiones_asignadas}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="690" y="0" width="132" height="18" uuid="8ac9e6bb-ddf3-411f-bd1e-5257d8b84c66"/>
+					<textElement textAlignment="Center">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Cumplimiento}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="41ac3d68-9507-4b16-8421-161f64c65b88"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="813" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="df1bb929-3436-4d22-812e-d9d025a69371"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="770" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="1cf45c66-0f62-4568-84ba-fdb28d39c3ea"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="690" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="c72401af-a570-485c-847f-f7d8241d1569"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="3ad885fc-4e0c-4138-b6a9-decf2aa782ee"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

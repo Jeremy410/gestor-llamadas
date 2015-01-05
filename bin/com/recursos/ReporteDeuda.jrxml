@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteDeuda" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f07a5d1a-48f8-4961-8536-0d78013d852c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conexion Base de Datos"/>
+	<property name="ireport.callouts" value="callouts.1.fg=0,0,0\n callouts.1.bg=255,255,0\n "/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="Fecha Inicial" class="java.util.Date">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="Fecha Final" class="java.util.Date">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+ a.fecha_pago 'Fecha Pago',
+ b.nombre_cliente +' '+ b.apellido_cliente 'Nombre Cliente',
+ a.monto_pago 'Monto Pago'
+FROM PAGO AS a
+JOIN CLIENTE b ON a.id_cliente = b.id_cliente
+WHERE fecha_pago BETWEEN   $P{Fecha Inicial}  AND  $P{Fecha Final}]]>
+	</queryString>
+	<field name="Fecha Pago" class="java.sql.Date"/>
+	<field name="Nombre Cliente" class="java.lang.String"/>
+	<field name="Monto Pago" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="122" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-1" y="64" width="804" height="32" forecolor="#000000" backcolor="#24D4E0" uuid="0d5a6f01-ab17-4413-a4fd-3389813a9146"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="654" y="10" width="144" height="20" forecolor="#FFFFFF" uuid="794419fc-38cf-4c50-988c-3108d28cc8c9"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="4" y="3" width="50" height="20" forecolor="#FFFFFF" uuid="f8b64faa-fac1-429e-9538-095a0da2b2f8"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Desde:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyy">
+					<reportElement x="54" y="2" width="50" height="20" forecolor="#FFFFFF" uuid="49c34d54-f4d6-477f-b750-3112d8866d13"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Fecha Inicial}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="104" y="2" width="50" height="20" forecolor="#FFFFFF" uuid="7ec7cc12-2648-4633-a71b-d671cb25f084"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Hasta:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="154" y="2" width="50" height="21" forecolor="#FFFFFF" uuid="55177029-11f8-43a0-a453-67dab598f932"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Fecha Final}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="803" height="66" backcolor="#0FDFF2" uuid="6b736469-6fb0-4819-bf4d-d915c29a3d69"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="500" height="66" uuid="dbebd178-ecba-4881-98d7-a3c852148ce3"/>
+					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
+					<textElement verticalAlignment="Bottom">
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Reporte de Deudas]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="130" height="18" forecolor="#000000" uuid="9c369743-5a45-45c1-8b68-bb301a9807a6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="103" y="0" width="265" height="18" forecolor="#000000" uuid="6da5c759-b4cd-4d11-a293-02ac79e7f1ac"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="610" y="0" width="189" height="18" forecolor="#000000" uuid="553d55b6-6b9a-4948-bc55-bfa43fe236f5"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Pago]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="803" height="18" uuid="4657edc0-a6aa-41ca-8073-defa3a8f3ad8"/>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/YYYY">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="110" height="18" uuid="8fc06cce-649b-42c5-a9db-623ff4500c55"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Fecha Pago}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="103" y="0" width="417" height="18" uuid="3da62d96-be03-4721-bce8-2608e0b472e7"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Nombre Cliente}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true" pattern="#,##0.###;(#,##0.###-)">
+				<reportElement style="Detail" positionType="Float" x="610" y="0" width="189" height="18" uuid="5edb6f7b-51fb-4a89-8718-17db4f43b18a"/>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Monto Pago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="4aeccf22-1b8c-49a0-9d57-171aa9f836b9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="d4257fec-a058-454b-b27b-b99ec77ae8ad"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="5657164d-e38e-41ec-8fdd-6ddadd37cce9"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="cd8415eb-5a8d-465c-be2b-e372508bb34b"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="376cd430-3c32-4089-a6cb-0d8af13a70f2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
