@@ -6,7 +6,7 @@ so that employees can manage the information and give a better service to its cu
 This also helps the employee to contact hours earlier the customer to notify of his payment or debt. 
 Or in the same way to reach an agreement or contract with themselves.
 
-Developed by: <strong>Jeremy Lopez</strong>
+Developed by: <strong>Jeremy Lopez</strong> <br />
 Programming language: <strong>Java Standard Edition</strong>
 
 
