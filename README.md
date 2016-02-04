@@ -11,3 +11,6 @@ Programming language: <strong>Java Standard Edition</strong>
 
 
 
+
+
+[![Join the chat at https://gitter.im/Jeremy410/gestor-llamadas](https://badges.gitter.im/Jeremy410/gestor-llamadas.svg)](https://gitter.im/Jeremy410/gestor-llamadas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
